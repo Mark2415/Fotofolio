@@ -1,0 +1,837 @@
+// ignore_for_file: deprecated_member_use, sort_child_properties_last, use_key_in_widget_constructors, avoid_print, unused_field
+
+import 'dart:async';
+import 'package:flutter/material.dart';
+
+//==============================================================================
+// 1. Titik Masuk Aplikasi (Entry Point)
+//==============================================================================
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Health App UI',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        fontFamily: 'Roboto',
+        inputDecorationTheme: const InputDecorationTheme(
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.orange)),
+        ),
+      ),
+      home: const RegisterPage(), // Aplikasi dimulai dari sini
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+//==============================================================================
+// 2. Halaman Navigasi Utama (Setelah Login)
+//==============================================================================
+class MainPage extends StatefulWidget {
+  final String userName;
+  const MainPage({super.key, required this.userName});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  // Indeks halaman yang aktif: 0=Home, 1=Diet, 2=Exercises, 3=Medical, 4=Yoga
+  int _selectedIndex = 0; 
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      HomePage(userName: widget.userName, onNavigate: _navigateTo),
+      DietPlanPage(userName: widget.userName, onNavigate: _navigateTo),
+      ExercisesPage(userName: widget.userName, onNavigate: _navigateTo),
+      MedicalTipsPage(userName: widget.userName, onNavigate: _navigateTo),
+      YogaPage(userName: widget.userName, onNavigate: _navigateTo),
+    ];
+  }
+
+  void _navigateTo(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+  
+  void _onItemTapped(int index) {
+    if (index == 0) { // Tombol "Today" di BottomNav
+      setState(() {
+        _selectedIndex = 0; // Kembali ke HomePage
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Halaman belum tersedia')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex == 0 ? 0 : 1,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: const Color(0xFF8A2BE2),
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.today_outlined), activeIcon: Icon(Icons.today) , label: 'Today'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), activeIcon: Icon(Icons.settings) ,label: 'Settings'),
+          BottomNavigationBarItem(icon: Icon(Icons.event_outlined), activeIcon: Icon(Icons.event) ,label: 'Tomorrow'),
+        ],
+      ),
+    );
+  }
+}
+
+//==============================================================================
+// 3. Widget-Widget yang Bisa Dipakai Ulang (Reusable Widgets)
+//==============================================================================
+class AppHeader extends StatelessWidget {
+  final String userName;
+  final String title;
+  final List<Widget> tabs;
+  
+  const AppHeader({
+    required this.userName,
+    required this.title,
+    required this.tabs,
+  });
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour >= 0 && hour < 11) return 'Good Morning';
+    if (hour >= 11 && hour < 15) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(top: 60, bottom: 20),
+      decoration: const BoxDecoration(
+        color: Color(0xFFF9C8A9),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_getGreeting(), style: const TextStyle(color: Colors.white, fontSize: 22)),
+                Text(userName, style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(255, 255, 255, 0.8),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: const TextField(
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.search, color: Colors.grey),
+                      hintText: 'Search',
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Center(child: Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold))),
+          const SizedBox(height: 15),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: tabs),
+        ],
+      ),
+    );
+  }
+}
+
+class HeaderTabItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const HeaderTabItem({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: Colors.white, size: 24),
+          ),
+          const SizedBox(height: 4),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 12))
+        ],
+      ),
+    );
+  }
+}
+
+//==============================================================================
+// 4. Semua Halaman Konten
+//==============================================================================
+
+// --- HomePage ---
+class HomePage extends StatelessWidget {
+  final String userName;
+  final Function(int) onNavigate;
+  const HomePage({required this.userName, required this.onNavigate});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AppHeader(
+          userName: userName,
+          title: "Home",
+          tabs: [
+            HeaderTabItem(icon: Icons.restaurant_menu, label: 'Diet Plan', onTap: () => onNavigate(1)),
+            HeaderTabItem(icon: Icons.fitness_center, label: 'Exercises', onTap: () => onNavigate(2)),
+            HeaderTabItem(icon: Icons.medical_services_outlined, label: 'Medical Tips', onTap: () => onNavigate(3)),
+            HeaderTabItem(icon: Icons.self_improvement, label: 'Yoga', onTap: () => onNavigate(4)),
+          ],
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: _buildMainMenu(context),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMainMenu(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          _buildMenuItem(icon: Icons.restaurant_menu, label: 'Diet Plan', onTap: () => onNavigate(1)),
+          _buildMenuItem(icon: Icons.fitness_center, label: 'Exercises', onTap: () => onNavigate(2)),
+          _buildMenuItem(icon: Icons.medical_services_outlined, label: 'Medical Tips', onTap: () => onNavigate(3)),
+          _buildMenuItem(icon: Icons.self_improvement, label: 'Yoga', onTap: () => onNavigate(4)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuItem({required IconData icon, required String label, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(15),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 50, color: const Color(0xFF8A2BE2)),
+            const SizedBox(height: 10),
+            Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black54)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// --- DietPlanPage ---
+class DietPlanPage extends StatelessWidget {
+  final String userName;
+  final Function(int) onNavigate;
+  const DietPlanPage({required this.userName, required this.onNavigate});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AppHeader(
+          userName: userName,
+          title: 'Diet Plan',
+          tabs: [
+            HeaderTabItem(icon: Icons.home, label: 'Home', onTap: () => onNavigate(0)),
+            HeaderTabItem(icon: Icons.fitness_center, label: 'Exercises', onTap: () => onNavigate(2)),
+            HeaderTabItem(icon: Icons.medical_services_outlined, label: 'Medical Tips', onTap: () => onNavigate(3)),
+            HeaderTabItem(icon: Icons.self_improvement, label: 'Yoga', onTap: () => onNavigate(4)),
+          ],
+        ),
+        Expanded(
+          child: Center(
+            child: SingleChildScrollView(
+              child: _buildDietList(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDietList() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildDietListItem(icon: Icons.free_breakfast, label: 'Breakfast'),
+                const SizedBox(height: 16),
+                _buildDietListItem(icon: Icons.lunch_dining, label: 'Lunch'),
+                const SizedBox(height: 16),
+                _buildDietListItem(icon: Icons.dinner_dining, label: 'Dinner'),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 30),
+                _buildDietListItem(icon: Icons.apple, label: 'Fruit'),
+                const SizedBox(height: 16),
+                _buildDietListItem(icon: Icons.bakery_dining, label: 'Snack'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDietListItem({required IconData icon, required String label}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 5)],
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(backgroundColor: const Color(0xFFD4B5F7), child: Icon(icon, color: Colors.white)),
+          const SizedBox(width: 12),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black54)),
+        ],
+      ),
+    );
+  }
+}
+
+// --- ExercisesPage ---
+class ExercisesPage extends StatelessWidget {
+  final String userName;
+  final Function(int) onNavigate;
+  const ExercisesPage({required this.userName, required this.onNavigate});
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AppHeader(
+          userName: userName,
+          title: 'Exercises',
+          tabs: [
+            HeaderTabItem(icon: Icons.home, label: 'Home', onTap: () => onNavigate(0)),
+            HeaderTabItem(icon: Icons.restaurant_menu, label: 'Diet Plan', onTap: () => onNavigate(1)),
+            HeaderTabItem(icon: Icons.medical_services_outlined, label: 'Medical Tips', onTap: () => onNavigate(3)),
+            HeaderTabItem(icon: Icons.self_improvement, label: 'Yoga', onTap: () => onNavigate(4)),
+          ],
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: _buildExerciseCategories(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExerciseCategories() {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        children: [
+          _buildExerciseButton(icon: Icons.accessibility_new, label: 'Upper Body', isFullWidth: true),
+          const SizedBox(height: 16),
+          _buildExerciseButton(icon: Icons.accessibility_new, label: 'Lower Body', isFullWidth: true),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(child: _buildExerciseButton(icon: Icons.directions_run, label: 'Cardio')),
+              const SizedBox(width: 16),
+              Expanded(child: _buildExerciseButton(icon: Icons.directions_bike, label: 'Core')),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExerciseButton({required IconData icon, required String label, bool isFullWidth = false}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(isFullWidth ? 30 : 20),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 1, blurRadius: 5)],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(backgroundColor: const Color(0xFFD4B5F7), radius: 25, child: Icon(icon, color: Colors.white, size: 30)),
+          const SizedBox(width: 16),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black54)),
+        ],
+      ),
+    );
+  }
+}
+
+// --- MedicalTipsPage ---
+class MedicalTipsPage extends StatefulWidget {
+  final String userName;
+  final Function(int) onNavigate;
+  const MedicalTipsPage({required this.userName, required this.onNavigate});
+  
+  @override
+  State<MedicalTipsPage> createState() => _MedicalTipsPageState();
+}
+
+class _MedicalTipsPageState extends State<MedicalTipsPage> {
+  late final PageController _pageController;
+  Timer? _timer;
+  int _currentPage = 0;
+
+  final List<String> medicalFacts = [
+    "Hydration is key. Drinking enough water can boost your metabolism.",
+    "Fiber-rich foods like oats and beans keep you feeling full longer.",
+    "Protein is essential for muscle repair and growth after exercise.",
+    "Don't skip breakfast! It kickstarts your metabolism for the day.",
+    "Healthy fats from avocados and nuts are crucial for brain health.",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) { 
+      if (!mounted) return;
+      _currentPage = (_currentPage + 1) % medicalFacts.length;
+      if (_pageController.hasClients) {
+        _pageController.animateToPage(_currentPage, duration: const Duration(milliseconds: 800), curve: Curves.easeInOut);
+      }
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AppHeader(
+          userName: widget.userName,
+          title: 'Medical Tips',
+          tabs: [
+            HeaderTabItem(icon: Icons.home, label: 'Home', onTap: () => widget.onNavigate(0)),
+            HeaderTabItem(icon: Icons.restaurant_menu, label: 'Diet Plan', onTap: () => widget.onNavigate(1)),
+            HeaderTabItem(icon: Icons.fitness_center, label: 'Exercises', onTap: () => widget.onNavigate(2)),
+            HeaderTabItem(icon: Icons.self_improvement, label: 'Yoga', onTap: () => widget.onNavigate(4)),
+          ],
+        ),
+        Expanded(
+          child: Center(
+            child: _buildTipsCarousel(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTipsCarousel() {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 2, blurRadius: 8)],
+      ),
+      child: PageView.builder(
+        controller: _pageController,
+        itemCount: medicalFacts.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Row(
+              children: [
+                const CircleAvatar(radius: 25, backgroundColor: Color(0xFFD4B5F7), child: Icon(Icons.medical_services_outlined, color: Colors.white)),
+                const SizedBox(width: 16),
+                Expanded(child: Text(medicalFacts[index], style: const TextStyle(fontSize: 16, color: Colors.black54, height: 1.5))),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// --- YogaPage ---
+class YogaPage extends StatelessWidget {
+  final String userName;
+  final Function(int) onNavigate;
+  const YogaPage({required this.userName, required this.onNavigate});
+  
+  @override
+  Widget build(BuildContext context) {
+     return Column(
+      children: [
+        AppHeader(
+          userName: userName,
+          title: 'Yoga',
+          tabs: [
+            HeaderTabItem(icon: Icons.home, label: 'Home', onTap: () => onNavigate(0)),
+            HeaderTabItem(icon: Icons.restaurant_menu, label: 'Diet Plan', onTap: () => onNavigate(1)),
+            HeaderTabItem(icon: Icons.fitness_center, label: 'Exercises', onTap: () => onNavigate(2)),
+            HeaderTabItem(icon: Icons.medical_services_outlined, label: 'Medical Tips', onTap: () => onNavigate(3)),
+          ],
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: _buildYogaTimerAndMusic(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildYogaTimerAndMusic() {
+    return Container(
+      margin: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9F0BE),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.2), spreadRadius: 2, blurRadius: 8)],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(20)),
+            child: const Text('STAND BY', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54, letterSpacing: 2)),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTimeAdjustButton(label: '-1S'),
+              _buildTimeAdjustButton(label: '-1M'),
+              _buildTimeAdjustButton(label: '-1H'),
+              const SizedBox(width: 4),
+              _buildTimerDisplay(),
+              const SizedBox(width: 4),
+              _buildTimeAdjustButton(label: '+1H'),
+              _buildTimeAdjustButton(label: '+1M'),
+              _buildTimeAdjustButton(label: '+1S'),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+            child: const Icon(Icons.refresh, color: Color(0xFF8A2BE2)),
+          ),
+          const SizedBox(height: 15),
+          Container(
+            width: 100, height: 35,
+            decoration: BoxDecoration(color: const Color(0xFF8A2BE2), borderRadius: BorderRadius.circular(20)),
+            child: const Center(child: Text('Stop', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
+          ),
+          const SizedBox(height: 30),
+          const Text('Waiting for music info', style: TextStyle(color: Colors.black54, fontSize: 14)),
+          const SizedBox(height: 10),
+          _buildMusicPlayerControls(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeAdjustButton({required String label}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 2),
+      width: 34, height: 34,
+      decoration: BoxDecoration(
+        color: Colors.white, shape: BoxShape.circle,
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
+      ),
+      child: Center(child: Text(label, style: const TextStyle(fontSize: 12, color: Colors.black54))),
+    );
+  }
+
+  Widget _buildTimerDisplay() {
+    return Container(
+      width: 90, height: 40,
+      decoration: BoxDecoration(
+        color: Colors.white, borderRadius: BorderRadius.circular(30),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
+      ),
+      child: const Center(child: Text('00:00:00', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF8A2BE2)))),
+    );
+  }
+
+  Widget _buildMusicPlayerControls() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        color: Colors.white, borderRadius: BorderRadius.circular(20),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), spreadRadius: 1, blurRadius: 3)],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(Icons.queue_music, color: Colors.grey[700], size: 28),
+          Icon(Icons.skip_previous, color: Colors.grey[700], size: 36),
+          Icon(Icons.play_arrow, color: Colors.grey[700], size: 36),
+          Icon(Icons.skip_next, color: Colors.grey[700], size: 36),
+          Icon(Icons.volume_up, color: Colors.grey[700], size: 28),
+        ],
+      ),
+    );
+  }
+}
+
+//==============================================================================
+// 5. Halaman Registrasi
+//==============================================================================
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _tgllhrtext = TextEditingController();
+  
+  bool _obscure = true;
+  bool _agree = false;
+  String? _gender;
+  String? _kotaLahir;
+  DateTime? _tanggalLahir;
+
+  final List<String> _kota = const ['Jakarta', 'Bandung', 'Surabaya', 'Denpasar', 'Makasar'];
+  
+  @override
+  void dispose() {
+    _name.dispose();
+    _email.dispose();
+    _password.dispose();
+    _tgllhrtext.dispose();
+    super.dispose();
+  }
+
+  String? _required(String? v) => (v == null || v.isEmpty) ? 'Wajib diisi' : null;
+
+  Future<void> _pickDate() async {
+    final now = DateTime.now();
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(now.year - 20),
+      firstDate: DateTime(now.year - 100),
+      lastDate: now,
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _tanggalLahir = pickedDate;
+        _tgllhrtext.text = '${pickedDate.day.toString().padLeft(2, '0')}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.year}';
+      });
+    }
+  }
+
+  void _submit() {
+    if (!_agree) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Anda harus menyetujui syarat dan ketentuan')));
+      return;
+    }
+    if (_formKey.currentState!.validate()) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainPage(userName: _name.text)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24).copyWith(bottom: 24),
+                        decoration: const BoxDecoration(color: Color(0xFFF9C8A9)),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Good Morning', style: TextStyle(fontSize: 28, color: Colors.white)),
+                            Text('Sign-up', style: TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(controller: _name, decoration: const InputDecoration(labelText: "Nama"), validator: _required, textInputAction: TextInputAction.next),
+                            const SizedBox(height: 12),
+                            TextFormField(controller: _email, decoration: const InputDecoration(labelText: "Email"), validator: _required, textInputAction: TextInputAction.next, keyboardType: TextInputType.emailAddress),
+                            const SizedBox(height: 12),
+                            TextFormField(
+                              controller: _password,
+                              validator: _required,
+                              obscureText: _obscure,
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                                suffixIcon: IconButton(
+                                  icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+                                  onPressed: () => setState(() => _obscure = !_obscure),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            const Text("Jenis Kelamin", style: TextStyle(fontSize: 16)),
+                            Row(
+                              children: [
+                                Expanded(child: RadioListTile<String>(title: const Text("Laki-laki"), value: "L", groupValue: _gender, onChanged: (v) => setState(() => _gender = v), contentPadding: EdgeInsets.zero)),
+                                Expanded(child: RadioListTile<String>(title: const Text("Perempuan"), value: "P", groupValue: _gender, onChanged: (v) => setState(() => _gender = v), contentPadding: EdgeInsets.zero)),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            DropdownButtonFormField<String>(
+                              decoration: const InputDecoration(labelText: "Kota Lahir"),
+                              items: _kota.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList(),
+                              onChanged: (v) => setState(() => _kotaLahir = v),
+                              validator: _required,
+                            ),
+                            const SizedBox(height: 12),
+                            TextFormField(
+                              controller: _tgllhrtext,
+                              readOnly: true,
+                              onTap: _pickDate,
+                              validator: _required,
+                              decoration: const InputDecoration(labelText: "Tanggal Lahir", suffixIcon: Icon(Icons.calendar_today)),
+                            ),
+                            const SizedBox(height: 12),
+                            CheckboxListTile(
+                              value: _agree,
+                              onChanged: (v) => setState(() => _agree = v ?? false),
+                              title: const Text("Saya menyetujui syarat dan ketentuan"),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.grey[800],
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _submit,
+                    icon: const Icon(Icons.check),
+                    label: const Text("Daftar"),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: const StadiumBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
