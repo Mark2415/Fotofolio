@@ -1,4 +1,5 @@
-# Android_UI_of_Health_app
-My University Project of subject mobile programming course
+# Extreme_Weather_Events_Detector
+My University Project of subject Big Data analysis course
 # Work period: 
-September 8, 2025 - September 17, 2025
+June 6, 2025 - June 15, 2025
+
