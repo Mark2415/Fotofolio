@@ -10,7 +10,8 @@ I moved all my projects to branches sort by project name to make searching easie
 ## Most Used Languages
 ![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Mark2415&layout=compact&theme=dark)
 
-![Most Used Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=original-jansen&layout=compact&theme=dark)
+## My GitHub Stats
+![](https://github-readme-stats.vercel.app/api?username=Mark2415&show_icons=true&count_private=true&hide=prs&theme=dark)
 
 ## 🏆 GitHub Trophies
 ![](https://github-profile-trophy.vercel.app/?username=Mark5412&theme=radical&no-frame=false&no-bg=false&margin-w=4)
@@ -22,6 +23,7 @@ I moved all my projects to branches sort by project name to make searching easie
 [![](https://visitcount.itsvg.in/api?id=Mark5412&icon=2&color=9)](https://visitcount.itsvg.in)
 
 <!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
+
 
 
 
