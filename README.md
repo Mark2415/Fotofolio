@@ -13,6 +13,8 @@ I moved all my projects to branches sort by project name to make searching easie
 
 ![Mark2415's Streak](https://github-readme-streak-stats.herokuapp.com/?user=Mark2415&theme=tokyonight&hide_border=false)
 
+![Mark2415's Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Mark2415&theme=synthwave&show_icons=true&hide_border=true&layout=compact)
+
 ## 🏆 GitHub Trophies
 ![](https://github-profile-trophy.vercel.app/?username=Mark5412&theme=radical&no-frame=false&no-bg=false&margin-w=4)
 
@@ -21,6 +23,7 @@ I moved all my projects to branches sort by project name to make searching easie
 
 ---
 [![](https://visitcount.itsvg.in/api?id=Mark5412&icon=2&color=9)](https://visitcount.itsvg.in)
+
 
 
 
