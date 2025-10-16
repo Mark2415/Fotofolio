@@ -10,3 +10,5 @@ October 15, 2025 - October 17, 2025
 # Data Source
 https://www.kaggle.com/datasets/carrie1/ecommerce-data 
 Downloaded October 15, 2025, 2:45 p.m.
+
+# For preview, I have included a demonstration video of this dashboard
