@@ -1,7 +1,4 @@
-# 
-![download](https://github.com/user-attachments/assets/6cc24199-4a65-4266-9b68-b9e924bdcb3f)
-
-# (Project_name)
-<!-- # device: Android Pixel 8 Pro --> <!--for android app-->
-# Work period: 
-September 8, 2025 - September 17, 2025
+# Melvin  Nagasari 825230014
+# Deskripsi Singkat aplikasi
+aplikasi yang memungkinkan pengguna untuk mencari film, menambahkan film ke daftar favorit, dan melihat daftar favorit.
+mengunakkan API The Movie Database untuk mengambil data film.
