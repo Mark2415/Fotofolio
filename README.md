@@ -1,5 +1,7 @@
 # 💫 About Me:
-👋Hello World, My Nickname are Mark5412,Nice to meet you :)<br>🎓pursuing a bachelor's degree in information systems<br>📍Im Born as Indonesian 🇮🇩.
+👋Hello World, My Nickname are Mark5412,Nice to meet you :)<br>
+🎓pursuing a bachelor's degree in information systems<br>
+📍Born as Indonesian
 
 # 💡 Where is Your File?:
 I moved all my projects to branches sort by project name to make searching easier. 
@@ -15,6 +17,7 @@ I moved all my projects to branches sort by project name to make searching easie
 
 ---
 [![](https://visitcount.itsvg.in/api?id=Mark5412&icon=2&color=9)](https://visitcount.itsvg.in)
+
 
 
 
