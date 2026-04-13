@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5f35d2cf5dc92b89869d918a5e9a7ad4 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+    <div style="position:fixed; bottom:30px; left:30px; z-index:1000;
+    background:white; padding:12px; border-radius:8px;
+    border:1px solid #ccc; font-size:12px; font-family:Arial">
+      <b>Tingkat PM2.5</b><br>
+      <span style="color:#e74c3c">●</span> &gt; 80 µg/m³ — Polusi Tinggi<br>
+      <span style="color:#e67e22">●</span> 60–80 µg/m³ — Polusi Sedang<br>
+      <span style="color:#f0a500">●</span> 50–60 µg/m³ — Polusi Rendah-Sedang<br>
+      <span style="color:#27ae60">●</span> &lt; 50 µg/m³ — Polusi Rendah
+    </div>
+    
+            <div class="folium-map" id="map_5f35d2cf5dc92b89869d918a5e9a7ad4" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5f35d2cf5dc92b89869d918a5e9a7ad4 = L.map(
+                "map_5f35d2cf5dc92b89869d918a5e9a7ad4",
+                {
+                    center: [39.95, 116.39],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 10,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_1af73e7fc0dfd960df05f24017ceb6dd = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_1af73e7fc0dfd960df05f24017ceb6dd.addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var circle_marker_30a86f8325b596f027c89ae3d6282126 = L.circleMarker(
+                [39.9824, 116.3976],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 33.016000000000005, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_b9dd7cf8ab39fae256b2f21628005b85 = L.marker(
+                [39.9824, 116.3976],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_80aa0194de3390910db6ce44c10129ba = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_edd42735b568df96840c02bb873e5287 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_e8e141ad1be185ae5e77227275b16d73 = $(`<div id="html_e8e141ad1be185ae5e77227275b16d73" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Aotizhongxin</b><hr>           <table>             <tr><td>PM2.5</td><td><b>82.54 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>110.21 µg/m³</td></tr>             <tr><td>NO2  </td><td>59.07 µg/m³</td></tr>             <tr><td>SO2  </td><td>17.46 µg/m³</td></tr>             <tr><td>CO   </td><td>1264.69 µg/m³</td></tr>             <tr><td>O3   </td><td>55.33 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_edd42735b568df96840c02bb873e5287.setContent(html_e8e141ad1be185ae5e77227275b16d73);
+            
+        
+
+        marker_b9dd7cf8ab39fae256b2f21628005b85.bindPopup(popup_edd42735b568df96840c02bb873e5287)
+        ;
+
+        
+    
+    
+            marker_b9dd7cf8ab39fae256b2f21628005b85.bindTooltip(
+                `<div>
+                     Aotizhongxin | PM2.5: 83 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_b9dd7cf8ab39fae256b2f21628005b85.setIcon(icon_80aa0194de3390910db6ce44c10129ba);
+            
+    
+            var circle_marker_b4000a73984d32600c32256324c94bc8 = L.circleMarker(
+                [40.2149, 116.231],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 28.396, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_84bf894756d9e987f12258a1e97bee5d = L.marker(
+                [40.2149, 116.231],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_6d5746ff658e64a0339c429773e964ce = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e472a68b9396e40c39eab518a5f7c751 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_2d1457c496dde26157ef3d9d438ba461 = $(`<div id="html_2d1457c496dde26157ef3d9d438ba461" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Changping</b><hr>           <table>             <tr><td>PM2.5</td><td><b>70.99 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>94.79 µg/m³</td></tr>             <tr><td>NO2  </td><td>44.21 µg/m³</td></tr>             <tr><td>SO2  </td><td>14.94 µg/m³</td></tr>             <tr><td>CO   </td><td>1156.99 µg/m³</td></tr>             <tr><td>O3   </td><td>57.98 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_e472a68b9396e40c39eab518a5f7c751.setContent(html_2d1457c496dde26157ef3d9d438ba461);
+            
+        
+
+        marker_84bf894756d9e987f12258a1e97bee5d.bindPopup(popup_e472a68b9396e40c39eab518a5f7c751)
+        ;
+
+        
+    
+    
+            marker_84bf894756d9e987f12258a1e97bee5d.bindTooltip(
+                `<div>
+                     Changping | PM2.5: 71 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_84bf894756d9e987f12258a1e97bee5d.setIcon(icon_6d5746ff658e64a0339c429773e964ce);
+            
+    
+            var circle_marker_e3e8610e871c6d54a9879ad36383c421 = L.circleMarker(
+                [40.29, 116.22],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 26.74, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_8e8fc15b19cc270d73e99a99afaff74c = L.marker(
+                [40.29, 116.22],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_e8d1d8c2d6f33e67ad30ae1b72d6eb32 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6b4b861ff7ac20f5ede879b46eda85b1 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_4d2a64536537062c021c482df3dca097 = $(`<div id="html_4d2a64536537062c021c482df3dca097" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Dingling</b><hr>           <table>             <tr><td>PM2.5</td><td><b>66.85 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>84.11 µg/m³</td></tr>             <tr><td>NO2  </td><td>27.3 µg/m³</td></tr>             <tr><td>SO2  </td><td>11.8 µg/m³</td></tr>             <tr><td>CO   </td><td>925.11 µg/m³</td></tr>             <tr><td>O3   </td><td>70.53 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_6b4b861ff7ac20f5ede879b46eda85b1.setContent(html_4d2a64536537062c021c482df3dca097);
+            
+        
+
+        marker_8e8fc15b19cc270d73e99a99afaff74c.bindPopup(popup_6b4b861ff7ac20f5ede879b46eda85b1)
+        ;
+
+        
+    
+    
+            marker_8e8fc15b19cc270d73e99a99afaff74c.bindTooltip(
+                `<div>
+                     Dingling | PM2.5: 67 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8e8fc15b19cc270d73e99a99afaff74c.setIcon(icon_e8d1d8c2d6f33e67ad30ae1b72d6eb32);
+            
+    
+            var circle_marker_3a90d9843befafda9716593bdf8ad11c = L.circleMarker(
+                [39.929, 116.417],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 34.456, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_0a8af5f4f29fb74ee9bd67de0a8014f1 = L.marker(
+                [39.929, 116.417],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_53d56c36e4ca6b78295471ac7cf26f5d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6824d0a3a45d876697e30c1d6fbc8c79 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_d6c87b9aab29df38d8c0c05da655d919 = $(`<div id="html_d6c87b9aab29df38d8c0c05da655d919" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Dongsi</b><hr>           <table>             <tr><td>PM2.5</td><td><b>86.14 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>110.35 µg/m³</td></tr>             <tr><td>NO2  </td><td>53.95 µg/m³</td></tr>             <tr><td>SO2  </td><td>18.51 µg/m³</td></tr>             <tr><td>CO   </td><td>1331.91 µg/m³</td></tr>             <tr><td>O3   </td><td>57.7 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_6824d0a3a45d876697e30c1d6fbc8c79.setContent(html_d6c87b9aab29df38d8c0c05da655d919);
+            
+        
+
+        marker_0a8af5f4f29fb74ee9bd67de0a8014f1.bindPopup(popup_6824d0a3a45d876697e30c1d6fbc8c79)
+        ;
+
+        
+    
+    
+            marker_0a8af5f4f29fb74ee9bd67de0a8014f1.bindTooltip(
+                `<div>
+                     Dongsi | PM2.5: 86 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0a8af5f4f29fb74ee9bd67de0a8014f1.setIcon(icon_53d56c36e4ca6b78295471ac7cf26f5d);
+            
+    
+            var circle_marker_e8712ddc3964b9a75d1d91e9cc3cdb06 = L.circleMarker(
+                [39.929, 116.339],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 33.160000000000004, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_abd93bd3a50fdcfc74e8ff3d91b274df = L.marker(
+                [39.929, 116.339],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_8578db2d252cd620029dbcd1ebf7b215 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fb99bcb69a105cb405315f7f767e54fa = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_81c6565cf2534b5cd8d4fdd9f03f94ad = $(`<div id="html_81c6565cf2534b5cd8d4fdd9f03f94ad" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Guanyuan</b><hr>           <table>             <tr><td>PM2.5</td><td><b>82.9 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>109.37 µg/m³</td></tr>             <tr><td>NO2  </td><td>58.14 µg/m³</td></tr>             <tr><td>SO2  </td><td>17.61 µg/m³</td></tr>             <tr><td>CO   </td><td>1258.33 µg/m³</td></tr>             <tr><td>O3   </td><td>54.82 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_fb99bcb69a105cb405315f7f767e54fa.setContent(html_81c6565cf2534b5cd8d4fdd9f03f94ad);
+            
+        
+
+        marker_abd93bd3a50fdcfc74e8ff3d91b274df.bindPopup(popup_fb99bcb69a105cb405315f7f767e54fa)
+        ;
+
+        
+    
+    
+            marker_abd93bd3a50fdcfc74e8ff3d91b274df.bindTooltip(
+                `<div>
+                     Guanyuan | PM2.5: 83 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_abd93bd3a50fdcfc74e8ff3d91b274df.setIcon(icon_8578db2d252cd620029dbcd1ebf7b215);
+            
+    
+            var circle_marker_2ba3e148241690037eed3bcc0a8e1aea = L.circleMarker(
+                [39.914, 116.184],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 33.628, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_7344b02e4de6920ce435f7fa17d1926f = L.marker(
+                [39.914, 116.184],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_aa1da39e95a25c51ab6ac14c1078fc14 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2da9849325a691f54e130558c27a53c6 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_03bfdc1e0fdfd81699548d1445e6a990 = $(`<div id="html_03bfdc1e0fdfd81699548d1445e6a990" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Gucheng</b><hr>           <table>             <tr><td>PM2.5</td><td><b>84.07 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>119.26 µg/m³</td></tr>             <tr><td>NO2  </td><td>55.82 µg/m³</td></tr>             <tr><td>SO2  </td><td>15.71 µg/m³</td></tr>             <tr><td>CO   </td><td>1338.1 µg/m³</td></tr>             <tr><td>O3   </td><td>58.0 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_2da9849325a691f54e130558c27a53c6.setContent(html_03bfdc1e0fdfd81699548d1445e6a990);
+            
+        
+
+        marker_7344b02e4de6920ce435f7fa17d1926f.bindPopup(popup_2da9849325a691f54e130558c27a53c6)
+        ;
+
+        
+    
+    
+            marker_7344b02e4de6920ce435f7fa17d1926f.bindTooltip(
+                `<div>
+                     Gucheng | PM2.5: 84 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7344b02e4de6920ce435f7fa17d1926f.setIcon(icon_aa1da39e95a25c51ab6ac14c1078fc14);
+            
+    
+            var circle_marker_b68c75c6f81427c491a1579d02b8c3ad = L.circleMarker(
+                [40.328, 116.628],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 27.8, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_ccb49183a3fa66f654c94c32a709e6b7 = L.marker(
+                [40.328, 116.628],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_ad9743f1beeb7eb84c2cdd1b4948e9be = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d3461650c108b4e0f2eba618ef957cc6 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_03365c5d4d952e0e7d81d21db3764c04 = $(`<div id="html_03365c5d4d952e0e7d81d21db3764c04" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Huairou</b><hr>           <table>             <tr><td>PM2.5</td><td><b>69.5 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>92.42 µg/m³</td></tr>             <tr><td>NO2  </td><td>32.08 µg/m³</td></tr>             <tr><td>SO2  </td><td>12.45 µg/m³</td></tr>             <tr><td>CO   </td><td>1019.67 µg/m³</td></tr>             <tr><td>O3   </td><td>60.87 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_d3461650c108b4e0f2eba618ef957cc6.setContent(html_03365c5d4d952e0e7d81d21db3764c04);
+            
+        
+
+        marker_ccb49183a3fa66f654c94c32a709e6b7.bindPopup(popup_d3461650c108b4e0f2eba618ef957cc6)
+        ;
+
+        
+    
+    
+            marker_ccb49183a3fa66f654c94c32a709e6b7.bindTooltip(
+                `<div>
+                     Huairou | PM2.5: 70 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ccb49183a3fa66f654c94c32a709e6b7.setIcon(icon_ad9743f1beeb7eb84c2cdd1b4948e9be);
+            
+    
+            var circle_marker_cf7d6dedde372a490fda8da0b1ce39d5 = L.circleMarker(
+                [39.937, 116.461],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 34.032000000000004, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_cd8174d53496ec10cdc444b49d6ade54 = L.marker(
+                [39.937, 116.461],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_aa93569966903afb9e45348c6ddc903b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3ba378f8a238eefa9077857c133997e6 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_6d427641a5b5d69c0cbebd6179ded721 = $(`<div id="html_6d427641a5b5d69c0cbebd6179ded721" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Nongzhanguan</b><hr>           <table>             <tr><td>PM2.5</td><td><b>85.08 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>109.38 µg/m³</td></tr>             <tr><td>NO2  </td><td>58.1 µg/m³</td></tr>             <tr><td>SO2  </td><td>18.76 µg/m³</td></tr>             <tr><td>CO   </td><td>1327.77 µg/m³</td></tr>             <tr><td>O3   </td><td>58.43 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_3ba378f8a238eefa9077857c133997e6.setContent(html_6d427641a5b5d69c0cbebd6179ded721);
+            
+        
+
+        marker_cd8174d53496ec10cdc444b49d6ade54.bindPopup(popup_3ba378f8a238eefa9077857c133997e6)
+        ;
+
+        
+    
+    
+            marker_cd8174d53496ec10cdc444b49d6ade54.bindTooltip(
+                `<div>
+                     Nongzhanguan | PM2.5: 85 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cd8174d53496ec10cdc444b49d6ade54.setIcon(icon_aa93569966903afb9e45348c6ddc903b);
+            
+    
+            var circle_marker_da1ee32fcf0fc7d1a3b1dafa472970f3 = L.circleMarker(
+                [40.127, 116.655],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 31.776, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_34c23b6a7e279a23ab90851c3c6f6573 = L.marker(
+                [40.127, 116.655],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_506c27e3515a78801a92ef075ed0fedb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d57fc6c6e3a5c160611db4a4b3165b76 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_d76c75c62c8bc54d618b15ea80f5669f = $(`<div id="html_d76c75c62c8bc54d618b15ea80f5669f" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Shunyi</b><hr>           <table>             <tr><td>PM2.5</td><td><b>79.44 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>99.27 µg/m³</td></tr>             <tr><td>NO2  </td><td>44.09 µg/m³</td></tr>             <tr><td>SO2  </td><td>13.45 µg/m³</td></tr>             <tr><td>CO   </td><td>1197.9 µg/m³</td></tr>             <tr><td>O3   </td><td>54.22 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_d57fc6c6e3a5c160611db4a4b3165b76.setContent(html_d76c75c62c8bc54d618b15ea80f5669f);
+            
+        
+
+        marker_34c23b6a7e279a23ab90851c3c6f6573.bindPopup(popup_d57fc6c6e3a5c160611db4a4b3165b76)
+        ;
+
+        
+    
+    
+            marker_34c23b6a7e279a23ab90851c3c6f6573.bindTooltip(
+                `<div>
+                     Shunyi | PM2.5: 79 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_34c23b6a7e279a23ab90851c3c6f6573.setIcon(icon_506c27e3515a78801a92ef075ed0fedb);
+            
+    
+            var circle_marker_231eba63739b18773f00f4daddf40ed8 = L.circleMarker(
+                [39.886, 116.407],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 32.812000000000005, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_ef6bc79013eec48733f0822bfe8732c6 = L.marker(
+                [39.886, 116.407],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_4fafe494d962f9dc676c98b281790e2c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8ed3fd87ef552610b78781d0fd30ec81 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_ba89d8614d0eff618bca45088784f0c0 = $(`<div id="html_ba89d8614d0eff618bca45088784f0c0" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Tiantan</b><hr>           <table>             <tr><td>PM2.5</td><td><b>82.03 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>106.54 µg/m³</td></tr>             <tr><td>NO2  </td><td>53.26 µg/m³</td></tr>             <tr><td>SO2  </td><td>14.51 µg/m³</td></tr>             <tr><td>CO   </td><td>1305.33 µg/m³</td></tr>             <tr><td>O3   </td><td>56.15 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_8ed3fd87ef552610b78781d0fd30ec81.setContent(html_ba89d8614d0eff618bca45088784f0c0);
+            
+        
+
+        marker_ef6bc79013eec48733f0822bfe8732c6.bindPopup(popup_8ed3fd87ef552610b78781d0fd30ec81)
+        ;
+
+        
+    
+    
+            marker_ef6bc79013eec48733f0822bfe8732c6.bindTooltip(
+                `<div>
+                     Tiantan | PM2.5: 82 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ef6bc79013eec48733f0822bfe8732c6.setIcon(icon_4fafe494d962f9dc676c98b281790e2c);
+            
+    
+            var circle_marker_3f56e9b7e95d915ba7de47fcab3c7ee9 = L.circleMarker(
+                [39.987, 116.287],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 33.388, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_315d457633f895dc99874bfa48f81784 = L.marker(
+                [39.987, 116.287],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_17325b4ea295c7f5211dea6cd4ac934f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_40f5006af2ac6ffeccb445e5036eb0a3 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_56656ea0bcad5935e01bd2f1ee36f798 = $(`<div id="html_56656ea0bcad5935e01bd2f1ee36f798" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Wanliu</b><hr>           <table>             <tr><td>PM2.5</td><td><b>83.47 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>110.71 µg/m³</td></tr>             <tr><td>NO2  </td><td>65.67 µg/m³</td></tr>             <tr><td>SO2  </td><td>18.41 µg/m³</td></tr>             <tr><td>CO   </td><td>1328.76 µg/m³</td></tr>             <tr><td>O3   </td><td>46.91 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_40f5006af2ac6ffeccb445e5036eb0a3.setContent(html_56656ea0bcad5935e01bd2f1ee36f798);
+            
+        
+
+        marker_315d457633f895dc99874bfa48f81784.bindPopup(popup_40f5006af2ac6ffeccb445e5036eb0a3)
+        ;
+
+        
+    
+    
+            marker_315d457633f895dc99874bfa48f81784.bindTooltip(
+                `<div>
+                     Wanliu | PM2.5: 83 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_315d457633f895dc99874bfa48f81784.setIcon(icon_17325b4ea295c7f5211dea6cd4ac934f);
+            
+    
+            var circle_marker_c7f46871485bae188a55b8cdfdf47d09 = L.circleMarker(
+                [39.878, 116.352],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.45, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 34.028, "stroke": true, "weight": 1.5}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var marker_7df3893683c48a7aa419aec5cbb2316d = L.marker(
+                [39.878, 116.352],
+                {
+}
+            ).addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+    
+            var icon_4750adabd43602830ba2303b89209977 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a2d445e14b5c5165f26b1a490e4cf289 = L.popup({
+  "maxWidth": 220,
+});
+
+        
+            
+                var html_db41723e216ae72484994250af7beba2 = $(`<div id="html_db41723e216ae72484994250af7beba2" style="width: 100.0%; height: 100.0%;">         <div style="font-family:Arial; font-size:12px; width:200px">           <b style="font-size:14px">Wanshouxigong</b><hr>           <table>             <tr><td>PM2.5</td><td><b>85.07 µg/m³</b></td></tr>             <tr><td>PM10 </td><td>112.51 µg/m³</td></tr>             <tr><td>NO2  </td><td>55.5 µg/m³</td></tr>             <tr><td>SO2  </td><td>17.36 µg/m³</td></tr>             <tr><td>CO   </td><td>1373.62 µg/m³</td></tr>             <tr><td>O3   </td><td>55.92 µg/m³</td></tr>           </table>         </div></div>`)[0];
+                popup_a2d445e14b5c5165f26b1a490e4cf289.setContent(html_db41723e216ae72484994250af7beba2);
+            
+        
+
+        marker_7df3893683c48a7aa419aec5cbb2316d.bindPopup(popup_a2d445e14b5c5165f26b1a490e4cf289)
+        ;
+
+        
+    
+    
+            marker_7df3893683c48a7aa419aec5cbb2316d.bindTooltip(
+                `<div>
+                     Wanshouxigong | PM2.5: 85 µg/m³
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7df3893683c48a7aa419aec5cbb2316d.setIcon(icon_4750adabd43602830ba2303b89209977);
+            
+    
+            var heat_map_d580d60fa75a3dee9bc21abba97eddec = L.heatLayer(
+                [[39.9824, 116.3976, 82.54], [40.2149, 116.231, 70.99], [40.29, 116.22, 66.85], [39.929, 116.417, 86.14], [39.929, 116.339, 82.9], [39.914, 116.184, 84.07], [40.328, 116.628, 69.5], [39.937, 116.461, 85.08], [40.127, 116.655, 79.44], [39.886, 116.407, 82.03], [39.987, 116.287, 83.47], [39.878, 116.352, 85.07]],
+                {
+  "minOpacity": 0.3,
+  "maxZoom": 18,
+  "radius": 40,
+  "blur": 25,
+  "gradient": {
+  0.4: "blue",
+  0.65: "lime",
+  0.85: "orange",
+  1.0: "red",
+},
+}
+            );
+        
+    
+            heat_map_d580d60fa75a3dee9bc21abba97eddec.addTo(map_5f35d2cf5dc92b89869d918a5e9a7ad4);
+        
+</script>
+</html>
