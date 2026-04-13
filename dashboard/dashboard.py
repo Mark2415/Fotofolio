@@ -270,7 +270,7 @@ with st.sidebar:
     st.markdown("---")
     st.markdown(
         "<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>"
-        "Nama: 📪M Ns</small>",
+        "Made by: 📪M Ns</small>",
         unsafe_allow_html=True,
     )
 
