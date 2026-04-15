@@ -168,14 +168,14 @@ def load_data(data_dir):
 # SIDEBAR
 
 with st.sidebar:
-    st.markdown("## Beijing AQ")
+    st.markdown("## Beijing Air Quality Analysis")
     st.markdown("---")
     menu = st.radio("Navigasi", [
         "Overview",
-        "Diagram tambahan",
         "Pertanyaan 1 — Lalu Lintas",
         "Pertanyaan 2 — Logistik",
         "Pertanyaan 3 — Asuransi",
+        "Diagram tambahan",
         "Analisis Lanjutan",
     ], label_visibility="collapsed")
     st.markdown("---")
