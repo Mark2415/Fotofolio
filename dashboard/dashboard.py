@@ -204,7 +204,7 @@ with st.sidebar:
   <span style="background:#7e0023;border-radius:4px;padding:2px 8px;color:white">■</span> Hazardous (250+)
 </div>""", unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>Nama: Melvin Nagasari</small>",
+    st.markdown("<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>Nama: 📪M Ns</small>",
                 unsafe_allow_html=True)
 
 
