@@ -168,7 +168,7 @@ def load_data(data_dir):
 # SIDEBAR
 
 with st.sidebar:
-    st.markdown("## 🌫️ Beijing AQ")
+    st.markdown("## Beijing AQ")
     st.markdown("---")
     menu = st.radio("Navigasi", [
         "Overview",
@@ -485,7 +485,7 @@ elif menu == "Diagram tambahan":
 
 # PERTANYAAN 1
 elif menu == "Pertanyaan 1 — Lalu Lintas":
-    st.markdown('<div class="section-title">🚦 Manajemen Lalu Lintas — Q4 2016 hingga Q1 2017</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title"> Manajemen Lalu Lintas — Q4 2016 hingga Q1 2017</div>', unsafe_allow_html=True)
     st.markdown("""<div class="insight-box">
     Bagaimana mengintegrasikan data historis PM2.5 & PM10 ke dalam sistem manajemen lalu lintas
     untuk membatasi kendaraan pada <b>Q4 2016 (Okt–Des) hingga Q1 2017 (Jan–Mar)</b>?
