@@ -24,34 +24,27 @@ from streamlit_folium import st_folium
 
 warnings.filterwarnings('ignore')
 
-
+# ─────────────────────────────────────────────────────────────
 # PAGE CONFIG
-
+# ─────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Beijing Air Quality Dashboard",
-    page_icon=":china:",
+    page_icon="🌫️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
+# ─────────────────────────────────────────────────────────────
 # CUSTOM CSS
+# ─────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
 
 html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 
-/* Animasi gradient bergerak */
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 .main-header {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    background-size: 200% 200%;
-    animation: gradientMove 12s ease infinite;
     padding: 2.5rem 2rem; border-radius: 16px; margin-bottom: 2rem;
     position: relative; overflow: hidden;
 }
@@ -69,19 +62,11 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
     color: rgba(255,255,255,0.65); font-size: 0.95rem;
     margin: 0.4rem 0 0; position: relative;
 }
-
-/* Animasi hover metric-card */
 .metric-card {
     background: #1e293b; border: 1px solid #334155;
     border-radius: 12px; padding: 1.2rem 1.4rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.metric-card:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-}
-
 .metric-card .label {
     font-size: 0.78rem; color: #94a3b8; font-weight: 500;
     letter-spacing: 0.05em; text-transform: uppercase;
@@ -92,6 +77,7 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 }
 .metric-card .sub { font-size: 0.8rem; color: #64748b; margin-top: 0.15rem; }
 
+/* Section title — putih sesuai request */
 .section-title {
     font-family: 'Syne', sans-serif;
     font-size: 1.3rem;
@@ -106,19 +92,16 @@ html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
     background: #0f172a; border-left: 4px solid #0ea5e9;
     border-radius: 0 10px 10px 0; padding: 1rem 1.25rem; margin: 1rem 0;
     font-size: 0.88rem; color: #bae6fd; line-height: 1.6;
-    transition: background 0.5s ease;
 }
-.insight-box:hover {
-    background: #1e293b;
-}
-
 [data-testid="stSidebar"] { background: #0f172a; }
 [data-testid="stSidebar"] * { color: #e2e8f0 !important; }
 .stApp { background: #0f172a; }
 </style>
 """, unsafe_allow_html=True)
 
+# ─────────────────────────────────────────────────────────────
 # KONSTANTA
+# ─────────────────────────────────────────────────────────────
 DATA_DIR = "source/dirty"
 STATIONS = [
     'Aotizhongxin','Changping','Dingling','Dongsi',
@@ -151,8 +134,10 @@ DS = {'figure.facecolor':'#1e293b','axes.facecolor':'#1e293b',
       'text.color':'#f1f5f9','grid.color':'#334155',
       'legend.facecolor':'#1e293b','legend.edgecolor':'#475569'}
 
-# LOAD & CLEAN DATA
 
+# ─────────────────────────────────────────────────────────────
+# LOAD & CLEAN DATA
+# ─────────────────────────────────────────────────────────────
 @st.cache_data(show_spinner="Memuat dan membersihkan data...")
 def load_data(data_dir):
     dfs = []
@@ -172,18 +157,20 @@ def load_data(data_dir):
     df_all['AQI_Category'] = pd.cut(df_all['PM2.5'], bins=AQI_BINS, labels=AQI_LABELS, right=True)
     return df_all
 
-# SIDEBAR
 
+# ─────────────────────────────────────────────────────────────
+# SIDEBAR
+# ─────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("## 🌫️ Beijing AQ")
     st.markdown("---")
     menu = st.radio("Navigasi", [
-        "Overview",
-        "Diagram tambahan",
-        "Pertanyaan 1 — Lalu Lintas",
-        "Pertanyaan 2 — Logistik",
-        "Pertanyaan 3 — Asuransi",
-        "Analisis Lanjutan",
+        "🏠 Overview",
+        "📊 EDA",
+        "🚦 Pertanyaan 1 — Lalu Lintas",
+        "🚚 Pertanyaan 2 — Logistik",
+        "🏥 Pertanyaan 3 — Asuransi",
+        "🔬 Analisis Lanjutan",
     ], label_visibility="collapsed")
     st.markdown("---")
     st.markdown("**Filter Global**")
@@ -209,28 +196,31 @@ with st.sidebar:
   <span style="background:#ff0000;border-radius:4px;padding:2px 8px;color:white">■</span> Unhealthy (55–150)<br>
   <span style="background:#8f3f97;border-radius:4px;padding:2px 8px;color:white">■</span> Very Unhealthy<br>
   <span style="background:#7e0023;border-radius:4px;padding:2px 8px;color:white">■</span> Hazardous (250+)
-</div>
-    """)
+</div>""", unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>Nama: M</small>",)
+    st.markdown("<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>Nama: Melvin Nagasari</small>",
+                unsafe_allow_html=True)
 
-
+# ─────────────────────────────────────────────────────────────
 # LOAD + FILTER
+# ─────────────────────────────────────────────────────────────
 df_raw = load_data(DATA_DIR)
 df = df_raw[(df_raw['station'].isin(sel_stations))&(df_raw['year'].isin(sel_years))].copy()
 
-
+# ─────────────────────────────────────────────────────────────
 # HEADER
+# ─────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="main-header">
-  <h1>Beijing Air Quality Dashboard</h1>
+  <h1>🌫️ Beijing Air Quality Dashboard</h1>
   <p>PRSA Multi-Site Dataset · Maret 2013 – Februari 2017 · 12 Stasiun Pemantauan</p>
 </div>""", unsafe_allow_html=True)
 
 
 
 # OVERVIEW
-if menu == "Overview":
+
+if menu == "🏠 Overview":
     c1,c2,c3,c4,c5 = st.columns(5)
     for col,(lbl,val,sub) in zip([c1,c2,c3,c4,c5],[
         ("Total Records",   f"{len(df):,}",             "baris data"),
@@ -283,11 +273,11 @@ if menu == "Overview":
 
 
 
-# Diagram tambahan
+# EDA
 
-elif menu == "Diagram tambahan":
+elif menu == "📊 EDA":
     tab_uni,tab_multi,tab_num,tab_cat = st.tabs([
-        "Univariate","Multivariate","Numerikal","Kategorikal"])
+        "📈 Univariate","🔗 Multivariate","🔢 Numerikal","🏷️ Kategorikal"])
 
     # UNIVARIATE
     with tab_uni:
@@ -490,8 +480,11 @@ elif menu == "Diagram tambahan":
         ])
         st.dataframe(anova_df,use_container_width=True,hide_index=True)
 
+
+
 # PERTANYAAN 1
-elif menu == "Pertanyaan 1 — Lalu Lintas":
+
+elif menu == "🚦 Pertanyaan 1 — Lalu Lintas":
     st.markdown('<div class="section-title">🚦 Manajemen Lalu Lintas — Q4 2016 hingga Q1 2017</div>', unsafe_allow_html=True)
     st.markdown("""<div class="insight-box">
     Bagaimana mengintegrasikan data historis PM2.5 & PM10 ke dalam sistem manajemen lalu lintas
@@ -554,15 +547,17 @@ elif menu == "Pertanyaan 1 — Lalu Lintas":
     st.dataframe(ss[['PM2.5','PM10','Avg_Particulate','Status','Rekomendasi']].round(2).head(n_rows),
                  use_container_width=True)
     st.markdown("""<div class="insight-box">
-    <b>Insight:</b> <b>Gucheng</b> satu-satunya zona Bahaya (101.67 µg/m³) selama Q4 2016–Q1 2017.
+    <b>💡 Insight:</b> <b>Gucheng</b> satu-satunya zona Bahaya (101.67 µg/m³) selama Q4 2016–Q1 2017.
     Tidak ada stasiun aman — seluruh Beijing di zona Awas saat musim dingin.
     Jam kritis: <b>pukul 20.00–01.00</b> (pola dua puncak polusi harian).
     </div>""", unsafe_allow_html=True)
 
+
+
 # PERTANYAAN 2
 
-elif menu == "Pertanyaan 2 — Logistik":
-    st.markdown('<div class="section-title"> Korelasi Meteorologi & Polusi pada Jam 06.00–22.00</div>', unsafe_allow_html=True)
+elif menu == "🚚 Pertanyaan 2 — Logistik":
+    st.markdown('<div class="section-title">🚚 Korelasi Meteorologi & Polusi — Jam 06.00–22.00</div>', unsafe_allow_html=True)
     st.markdown("""<div class="insight-box">
     Bagaimana mengukur korelasi meteorologi vs polusi untuk mengalihkan rute pengiriman
     selama <b>jam operasional puncak 06.00–22.00</b>?
@@ -582,17 +577,17 @@ elif menu == "Pertanyaan 2 — Logistik":
     c1,c2,c3 = st.columns(3)
     with c1:
         st.markdown(f"""<div class="metric-card">
-            <div class="label">Jam Paling Aman</div>
+            <div class="label">✅ Jam Paling Aman</div>
             <div class="value" style="font-size:1.1rem">{safest2}</div>
             <div class="sub">untuk pengiriman</div></div>""", unsafe_allow_html=True)
     with c2:
         st.markdown(f"""<div class="metric-card">
-            <div class="label">Jam Paling Berisiko</div>
+            <div class="label">⚠️ Jam Paling Berisiko</div>
             <div class="value" style="font-size:1.1rem">{riskiest2}</div>
             <div class="sub">hindari pengiriman</div></div>""", unsafe_allow_html=True)
     with c3:
         st.markdown(f"""<div class="metric-card">
-            <div class="label">Rute Paling Aman</div>
+            <div class="label">🏆 Rute Paling Aman</div>
             <div class="value" style="font-size:1.2rem">{sr2.index[0]}</div>
             <div class="sub">Risk Score: {sr2.iloc[0]:.1f}</div></div>""", unsafe_allow_html=True)
 
@@ -626,17 +621,19 @@ elif menu == "Pertanyaan 2 — Logistik":
         fig.tight_layout(); st.pyplot(fig); plt.close()
 
     st.markdown("""<div class="insight-box">
-    <b>Insight:</b> <b>WSPM</b> faktor terkuat (r=-0.396 vs NO2).
+    <b>💡 Insight:</b> <b>WSPM</b> faktor terkuat (r=-0.396 vs NO2).
     Pukul <b>06.00 pagi berisiko tinggi</b> — polutan malam belum terdispersi.
     Jadwalkan pengiriman pukul <b>12.00–16.00</b> via <b>Dingling & Huairou</b>.
     </div>""", unsafe_allow_html=True)
 
+
+
 # PERTANYAAN 3
 
-elif menu == "Pertanyaan 3 — Asuransi":
-    st.markdown('<div class="section-title"> Proyeksi Klaim Asuransi pada Musim Dingin 2016</div>', unsafe_allow_html=True)
+elif menu == "🏥 Pertanyaan 3 — Asuransi":
+    st.markdown('<div class="section-title">🏥 Proyeksi Klaim Asuransi — Musim Dingin Nov–Feb 2016</div>', unsafe_allow_html=True)
     st.markdown("""<div class="insight-box">
-    Bagaimana menganalisis fluktuasi SO2 & NO2 selama <b>musim dingin 2016</b>
+    Bagaimana menganalisis fluktuasi SO2 & NO2 selama <b>musim dingin Nov–Feb 2016</b>
     untuk memproyeksikan lonjakan klaim dan merancang struktur premi?
     </div>""", unsafe_allow_html=True)
 
@@ -703,16 +700,18 @@ elif menu == "Pertanyaan 3 — Asuransi":
     st.markdown('<div class="section-title">Struktur Premi per Stasiun</div>', unsafe_allow_html=True)
     st.dataframe(pr3.head(n_rows),use_container_width=True)
     st.markdown("""<div class="insight-box">
-    <b>Insight:</b> <b>Wanliu</b> Risk Index 97.0 → premi tertinggi Rp 1.000.000/bulan.
+    <b>💡 Insight:</b> <b>Wanliu</b> Risk Index 97.0 → premi tertinggi Rp 1.000.000/bulan.
     <b>Desember</b> = puncak NO2 (77.50 µg/m³ di 2016) — bulan klaim tertinggi.
     Cadangan klaim <b>20–30% lebih besar</b> pada Oktober–Maret.
     </div>""", unsafe_allow_html=True)
 
+
+
 # ANALISIS LANJUTAN
 
-elif menu == "Analisis Lanjutan":
+elif menu == "🔬 Analisis Lanjutan":
     tab1,tab2,tab3,tab4 = st.tabs([
-        "RFM Analysis","Manual Grouping","Geospatial","AQI Binning"])
+        "📊 RFM Analysis","🗂️ Manual Grouping","🗺️ Geospatial","📦 AQI Binning"])
 
     with tab1:
         st.markdown('<div class="section-title">RFM-Style Analysis — Risiko Polusi PM2.5</div>', unsafe_allow_html=True)
@@ -769,13 +768,13 @@ elif menu == "Analisis Lanjutan":
         ).round(2)
         def ag2(row):
             if row['PM25_mean']>80 and row['NO2_mean']>60: return 'Klaster A — Polusi Tinggi'
-            elif row['PM25_mean']>60 and row['NO2_mean']>45: return 'Klaster B — Polusi SDiagram tambahanng'
-            elif row['PM25_mean']>50: return 'Klaster C — Polusi Rendah-SDiagram tambahanng'
+            elif row['PM25_mean']>60 and row['NO2_mean']>45: return 'Klaster B — Polusi Sedang'
+            elif row['PM25_mean']>50: return 'Klaster C — Polusi Rendah-Sedang'
             else: return 'Klaster D — Polusi Rendah'
         prf['Klaster'] = prf.apply(ag2,axis=1)
         ps2 = prf.sort_values('PM25_mean',ascending=False)
-        kc = {'Klaster A — Polusi Tinggi':'#e74c3c','Klaster B — Polusi SDiagram tambahanng':'#e67e22',
-              'Klaster C — Polusi Rendah-SDiagram tambahanng':'#f1c40f','Klaster D — Polusi Rendah':'#27ae60'}
+        kc = {'Klaster A — Polusi Tinggi':'#e74c3c','Klaster B — Polusi Sedang':'#e67e22',
+              'Klaster C — Polusi Rendah-Sedang':'#f1c40f','Klaster D — Polusi Rendah':'#27ae60'}
         col1,col2 = st.columns(2)
         with col1:
             with plt.rc_context(DS):
@@ -800,7 +799,7 @@ elif menu == "Analisis Lanjutan":
         st.dataframe(ps2.head(n_rows),use_container_width=True)
 
     with tab3:
-        st.markdown('<div class="section-title">Peta Distribusi Polusi per Stasiun</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">🗺️ Peta Distribusi Polusi per Stasiun</div>', unsafe_allow_html=True)
         sa = df.groupby('station').agg(
             PM25=('PM2.5','mean'),PM10=('PM10','mean'),
             NO2=('NO2','mean'),  SO2=('SO2','mean'),
@@ -830,7 +829,7 @@ elif menu == "Analisis Lanjutan":
         </div>""", unsafe_allow_html=True)
 
     with tab4:
-        st.markdown('<div class="section-title">Clustering Binning — Kategori AQI PM2.5</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">📦 Clustering Binning — Kategori AQI PM2.5</div>', unsafe_allow_html=True)
         db = df.copy()
         db['AQI_Category'] = pd.cut(db['PM2.5'],bins=AQI_BINS,labels=AQI_LABELS,right=True)
         gd = db['AQI_Category'].value_counts().reindex(AQI_LABELS).fillna(0)

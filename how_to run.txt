@@ -1,4 +1,0 @@
-winget install Python.Python.3.11 <- jika belum install py ver 3.11
-
-pip uinstall -r requirements.txt <- disarankan agar tidak ada conflict libary
-pip install -r requirements.txt <- menjalankan libary

@@ -89,6 +89,7 @@ folium==0.20.0
 
 | | |
 |-|-|
-| **Nama** | M Ns ||
+| **Nama** | M Ns |
+| **Email** | cdcc325d6y0626@student.devacademy.id |
 | **Dataset** | PRSA Multi-Site Air Quality, Beijing 2013–2017 |
 | **Sumber** | [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/501/beijing+multi+site+air+quality+data) |
