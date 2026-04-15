@@ -1,10 +1,3 @@
-"""
-═══════════════════════════════════════════════════════════════
-  DASHBOARD — Beijing Air Quality Analysis
-  Streamlit | PRSA Dataset 2013–2017
-  Jalankan: streamlit run dashboard.py
-═══════════════════════════════════════════════════════════════
-"""
 
 import os
 import warnings
@@ -209,10 +202,10 @@ with st.sidebar:
   <span style="background:#ff0000;border-radius:4px;padding:2px 8px;color:white">■</span> Unhealthy (55–150)<br>
   <span style="background:#8f3f97;border-radius:4px;padding:2px 8px;color:white">■</span> Very Unhealthy<br>
   <span style="background:#7e0023;border-radius:4px;padding:2px 8px;color:white">■</span> Hazardous (250+)
-</div>
-    """)
+</div>""", unsafe_allow_html=True)
     st.markdown("---")
-    st.markdown("<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>Nama: M</small>",)
+    st.markdown("<small style='color:#64748b'>PRSA Dataset · Beijing 2013–2017<br>Nama: Melvin Nagasari</small>",
+                unsafe_allow_html=True)
 
 
 # LOAD + FILTER
